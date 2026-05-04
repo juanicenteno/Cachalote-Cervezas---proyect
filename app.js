@@ -2,13 +2,10 @@ const express = require('express');
 const path = require ('path');
 const app = express();
 const { join } = require('path');
-const publicPath = path.resolve(__dirname, '../public');
+const publicPath = path.join(__dirname, 'public');
 app.use(express.static(publicPath)) 
-app.listen(process.env.PORT || 3000, () => {
-    console.log('servidor corriendo...');
-});
 
-app.set('views', join(__dirname, './views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.get("/", function(req,res){
@@ -54,3 +51,9 @@ app.get("/NuestrasCervezas", function(req,res){
 app.get("/paginaEnConstruccion", function(req,res){
     return res.render("paginaEnConstruccion.ejs");
 });
+
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(3000, () => console.log('Servidor corriendo en puerto 3000'));
+}
+
+module.exports = app; 
